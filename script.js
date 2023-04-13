@@ -1,20 +1,14 @@
-const sampleObject = { red: "#FF0000", green: "#00FF00", white: "#FFFFFF" };
-
-function hasKey(key) {
- 
-	const sampleObject = { red: "#FF0000", green: "#00FF00", white: "#FFFFFF" };
-
-function hasKey(key) {
-  return Object.prototype.hasOwnProperty.call(sampleObject, key);
-}
-
-console.log(hasKey("red")); // true
-console.log(hasKey("blue")); // false
-console.log(hasKey("white")); // true
-
-
-}
-
-// Do not change the code below
-const key = prompt("Enter Key.");
-alert(hasKey(key));
+it("hasKey should check if the key exists in sampleObject", () => {
+  const sampleObject = { red: "#FF0000", green: "#00FF00", white: "#FFFFFF" };
+  const key = "red";
+  cy.visit(baseUrl, {
+    onBeforeLoad(win) {
+      cy.stub(win, "prompt").returns(key);
+    }
+  });
+  cy.window().then(win => {
+    expect(hasKey(key)).to.equal(true);
+    expect(hasKey("blue")).to.equal(false);
+    expect(hasKey("white")).to.equal(true);
+  });
+});
