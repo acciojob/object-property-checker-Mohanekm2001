@@ -1,14 +1,20 @@
-it("hasKey should check if the key exists in sampleObject", () => {
-  const sampleObject = { red: "#FF0000", green: "#00FF00", white: "#FFFFFF" };
-  const key = "red";
-  cy.visit(baseUrl, {
-    onBeforeLoad(win) {
-      cy.stub(win, "prompt").returns(key);
-    }
-  });
-  cy.window().then(win => {
-    expect(hasKey(key)).to.equal(true);
-    expect(hasKey("blue")).to.equal(false);
-    expect(hasKey("white")).to.equal(true);
-  });
-});
+const sampleObject = { red: "#FF0000", green: "#00FF00", white: "#FFFFFF" };
+
+function hasKey(key) {
+  return key in sampleObject;
+}
+function rot13(str) {
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const shift = 13;
+
+  return str
+    .split("")
+    .map((char) => {
+      if (/[A-Z]/.test(char)) {
+        const charIndex = alphabet.indexOf(char);
+        return alphabet[(charIndex + shift) % 26];
+      }
+      return char;
+    })
+    .join("");
+}
